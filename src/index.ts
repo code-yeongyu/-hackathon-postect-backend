@@ -1,7 +1,7 @@
 import morgan from 'morgan'
 import express from 'express'
 import bodyParser from 'body-parser'
-import models from './models'
+import { ModelList as models } from './models'
 import routes from './routes'
 import sequelize from './config/db'
 

@@ -1,3 +1,6 @@
 import User from "./user"
-const models = [User]
-export default [models]
+import DailyHistory from "./dailyHistory"
+const models = [User, DailyHistory]
+export { models as ModelList }
+export { default as User } from "./user"
+export { default as DailyHistory } from "./dailyHistory"
