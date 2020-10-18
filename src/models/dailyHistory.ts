@@ -1,5 +1,5 @@
-import { DataTypes, Model } from 'sequelize'
-import sequelize from '../config/db'
+import { DataTypes } from 'sequelize'
+import sequelize from '../utils/db'
 
 let dailyHistorySchema = {
     pk: {
@@ -24,7 +24,6 @@ let dailyHistorySchema = {
     }
 }
 
-class DailyHistory extends Model { }
-DailyHistory.init(dailyHistorySchema, { sequelize, modelName: 'DailyHistory' })
+const DailyHistory = sequelize.define('DailyHistory', dailyHistorySchema)
 DailyHistory.belongsTo(sequelize.models.User, { foreignKey: 'owner' })
 export default DailyHistory

@@ -1,5 +1,6 @@
-import { DataTypes, Model } from 'sequelize'
-import sequelize from '../config/db'
+import { DataTypes } from 'sequelize'
+import bcrypt from 'bcrypt'
+import sequelize from '../utils/db'
 
 let userSchema = {
     pk: {
@@ -21,6 +22,11 @@ let userSchema = {
     }
 }
 
-class User extends Model { }
-User.init(userSchema, { sequelize, modelName: 'User' })
+const User = sequelize.define('User', userSchema)
+User.prototype.createPassword = async (password: string) => {
+    const saltRounds = 10
+    const salt = await bcrypt.genSalt(saltRounds)
+    const hash = await bcrypt.hash(password, salt)
+    return hash
+}
 export default User
