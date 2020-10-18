@@ -1,9 +1,13 @@
-import morgan from 'morgan'
 import express from 'express'
+import morgan from 'morgan'
 import bodyParser from 'body-parser'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUI from 'swagger-ui-express'
 import { ModelList as models } from './models'
 import routes from './routes'
-import sequelize from './config/db'
+import sequelize from './utils/db'
+import swaggerOptions from './config/swagger'
+import { ErrorType, errorMessages } from './errors'
 
 models.forEach((model) => {
     model.sync()
@@ -19,13 +23,19 @@ sequelize.authenticate()
     });
 
 const app = express()
-app.set('port', process.env.PORT || 3000)
 
+const swaggerSpec = swaggerJSDoc(swaggerOptions);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+app.get('/custom-errors', (req: express.Request, res: express.Response) => {
+    res.json({
+        "errorTypes": ErrorType,
+        "errorMessages": errorMessages
+    })
+})
 app.use(bodyParser.json())
 app.use(morgan('combined'))
 
-routes.forEach((route) => {
-    app.use(route)
-})
 
-app.listen()
+app.use('', routes)
+
+app.listen(process.env.PORT || 3000)
