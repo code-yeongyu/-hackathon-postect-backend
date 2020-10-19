@@ -1,4 +1,6 @@
 import { Request, Response } from "express"
+import jwt from "jsonwebtoken"
+import passport from 'passport'
 import { User } from "../models"
 import { ErrorType } from "../errors"
 import getErrorMessage from "../utils/errors"
@@ -23,4 +25,25 @@ const register = async (req: Request, res: Response) => {
     res.status(201).send()
 }
 
-export { register }
+const createToken = (req: Request, res: Response) => {
+    passport.authenticate('local', { session: false }, (err, user) => {
+        if (err || !user) {
+            return res.status(400).json(getErrorMessage(ErrorType.UnexpectedError)).send()
+        }
+        req.login(user, { session: false }, (err) => {
+            if (err) {
+                const errorMessage = getErrorMessage(ErrorType.UnexpectedError)
+                const response = {
+                    errorCode: errorMessage.errorType,
+                    msg: errorMessage.msg,
+                    details: err
+                }
+                return res.status(400).json(response).send()
+            }
+            const token = jwt.sign(user, process.env.JWT_SECRET || 'default')
+            return res.json({ user, token }).send()
+        })
+    })(req, res);
+}
+
+export { register, createToken }

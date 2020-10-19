@@ -42,7 +42,7 @@
 
 import { Router } from 'express'
 import { body } from 'express-validator'
-import { register } from '../controllers/user'
+import { register, createToken } from '../controllers/user'
 import validationResultChecker from '../middlewares/validationResultChecker'
 
 const router = Router()
@@ -55,6 +55,6 @@ const registerValidator = [
 ]
 
 router.post('/register', registerValidator, register)
-
+router.post('/auth/token', createToken)
 
 export default router
