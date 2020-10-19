@@ -59,7 +59,8 @@
  *              201:
  *                  description: User created
  *              400:
- *                  description: ParameterError
+ *                  schema:
+ *                      $ref: "#/definitions/error_response"
  * /user/auth/token:
  *      post:
  *          tags:
