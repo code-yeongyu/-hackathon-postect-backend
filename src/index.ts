@@ -1,13 +1,19 @@
 import express from 'express'
-import morgan from 'morgan'
-import bodyParser from 'body-parser'
+
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUI from 'swagger-ui-express'
+import morgan from 'morgan'
+import bodyParser from 'body-parser'
+import passport from 'passport'
+
+
+import swaggerOptions from './config/swagger'
+import sequelize from './utils/db'
+import passportConfig from './config/passport'
+import { ErrorType, errorMessages } from './errors'
+
 import { ModelList as models } from './models'
 import routes from './routes'
-import sequelize from './utils/db'
-import swaggerOptions from './config/swagger'
-import { ErrorType, errorMessages } from './errors'
 
 models.forEach((model) => {
     model.sync()
@@ -34,7 +40,8 @@ app.get('/custom-errors', (req: express.Request, res: express.Response) => {
 })
 app.use(bodyParser.json())
 app.use(morgan('combined'))
-
+app.use(passport.initialize())
+passportConfig()
 
 app.use('', routes)
 
