@@ -1,7 +1,8 @@
 enum ErrorType {
     UnexpectedError = 'unexpectedError',
     ValidationError = 'validationError',
-    UserExists = 'userExists'
+    UserExists = 'userExists',
+    LoginFailed = 'loginFailed',
 }
 
 export default ErrorType

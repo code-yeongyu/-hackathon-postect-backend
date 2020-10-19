@@ -7,7 +7,7 @@ const validationResultChecker = (req: Request, res: Response, next: Function) =>
     const errors = validationResult(req)
     const errorMessage = getErrorMessage(ErrorType.ValidationError)
     const response = {
-        errorCode: errorMessage.errorType,
+        errorType: errorMessage.errorType,
         msg: errorMessage.msg,
         details: errors.array()
     }

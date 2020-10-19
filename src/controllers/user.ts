@@ -28,13 +28,18 @@ const register = async (req: Request, res: Response) => {
 const createToken = (req: Request, res: Response) => {
     passport.authenticate('local', { session: false }, (err, user) => {
         if (err || !user) {
-            return res.status(400).json(getErrorMessage(ErrorType.UnexpectedError)).send()
+            const errorMessage = getErrorMessage(ErrorType.LoginFailed)
+            const response = {
+                errorType: errorMessage.errorType,
+                msg: errorMessage.msg
+            }
+            return res.status(400).json(response).send()
         }
         req.login(user, { session: false }, (err) => {
             if (err) {
-                const errorMessage = getErrorMessage(ErrorType.UnexpectedError)
+                const errorMessage = getErrorMessage(ErrorType.LoginFailed)
                 const response = {
-                    errorCode: errorMessage.errorType,
+                    errorType: errorMessage.errorType,
                     msg: errorMessage.msg,
                     details: err
                 }
