@@ -1,4 +1,5 @@
 enum ErrorType {
+    UnexpectedError = 'unexpectedError',
     ValidationError = 'validationError',
     UserExists = 'userExists'
 }
