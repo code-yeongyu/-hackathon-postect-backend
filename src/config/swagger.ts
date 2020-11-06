@@ -9,15 +9,11 @@ const swaggerDefinition = {
         },
     },
     securityDefinitions: {
-        jwt: {
-            type: 'apiKey',
-            name: 'Authorization',
-            in: 'header'
+        oAuth: {
+            type: 'oauth2',
+            authorizationUrl: "/user/auth/token"
         }
     },
-    security: [
-        { jwt: [] }
-    ],
     basePath: '/'
 };
 
